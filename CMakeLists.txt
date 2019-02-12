@@ -135,8 +135,11 @@ IF( MSVC AND LIBCITYGML_STATIC_CRT )
   ENDFOREACH( flag_var )
 ENDIF( MSVC AND LIBCITYGML_STATIC_CRT )
 
-
-OPTION(LIBCITYGML_USE_OPENGL "Set to OFF to prevent use of GL libraries. Tesselator won't be compiled." ON)
+# glu vs glutess library
+OPTION(USE_GLUTESS "Use glutess library for tesselation. If off, uses OpenGL GLU library" ON)
+IF( USE_GLUTESS )
+  ADD_SUBDIRECTORY( thirdparty/glutess )
+ENDIF( USE_GLUTESS )
 
 # core
 ADD_SUBDIRECTORY( sources )
