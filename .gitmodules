@@ -1,0 +1,3 @@
+[submodule "thirdparty/glutess"]
+	path = thirdparty/glutess
+	url = https://github.com/shehzan10/glutess.git
