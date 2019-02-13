@@ -136,10 +136,10 @@ IF( MSVC AND LIBCITYGML_STATIC_CRT )
 ENDIF( MSVC AND LIBCITYGML_STATIC_CRT )
 
 # glu vs glutess library
-OPTION(USE_GLUTESS "Use glutess library for tesselation. If off, uses OpenGL GLU library" ON)
-IF( USE_GLUTESS )
-  ADD_SUBDIRECTORY( thirdparty/glutess )
-ENDIF( USE_GLUTESS )
+OPTION(LIBCITYGML_USE_GLUTESS "Use glutess library for tesselation (Requires setting GLUTESS_INCLUDE_DIR and GLUTESS_LIBRARY). If off, uses OpenGL GLU library" OFF)
+IF( LIBCITYGML_USE_GLUTESS )
+  FIND_PACKAGE( GLUTess REQUIRED )
+ENDIF( LIBCITYGML_USE_GLUTESS )
 
 # core
 ADD_SUBDIRECTORY( sources )
