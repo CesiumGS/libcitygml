@@ -24,15 +24,15 @@
 #	define APIENTRY
 #endif
 
-#ifdef USE_GLU
+#ifdef USE_GLUTESS
+  #include  <glutess.h>
+#else
 #ifdef __APPLE__
   #include <OpenGL/glu.h>
 #else
   #include <GL/glu.h>
 #endif
-#else
-  #include  <glutess.h>
-#endif // USE_GLU
+#endif // USE_GLUTESS
 
 #include <citygml/citygml_api.h>
 #include <citygml/vecs.hpp>
