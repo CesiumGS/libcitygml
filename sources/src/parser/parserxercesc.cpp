@@ -281,12 +281,12 @@ namespace citygml
         parser->setContentHandler( &handler );
         parser->setErrorHandler( &handler );
 
-#ifdef NDEBUG
+#if defined(NDEBUG) && !defined(LIBCITYGML_ALLOW_PARSER_EXCEPTION)
         try
         {
 #endif
             parser->parse(stream);
-#ifdef NDEBUG
+#if defined(NDEBUG) && !defined(LIBCITYGML_ALLOW_PARSER_EXCEPTION)
         }
         catch ( const xercesc::XMLException& e )
         {
@@ -339,12 +339,12 @@ namespace citygml
 
         std::shared_ptr<XMLCh> fileName = toXercesString(fname);
 
-#ifdef NDEBUG
+#if defined(NDEBUG) && !defined(LIBCITYGML_ALLOW_PARSER_EXCEPTION)
         try {
 #endif
             xercesc::LocalFileInputSource fileSource(fileName.get());
             return parse(fileSource, params, logger, std::move(tesselator), fname);
-#ifdef NDEBUG
+#if defined(NDEBUG) && !defined(LIBCITYGML_ALLOW_PARSER_EXCEPTION)
         } catch (xercesc::XMLException& e) {
             CITYGML_LOG_ERROR(logger, "Error parsing file " << fname << ": " << e.getMessage());
             return nullptr;
