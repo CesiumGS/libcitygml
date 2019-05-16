@@ -114,12 +114,15 @@ void TesselatorBase::addContour(const std::vector<TVec3d>& pts, std::vector<std:
     }
 
     unsigned int pos = _vertices.size();
+    gluTessBeginContour( _tobj );
 
     for ( unsigned int i = 0; i < len; i++ )
     {
         _vertices.push_back( pts[i] );
         _indices.push_back(pos + i);
     }
+
+    gluTessEndContour( _tobj );
 
 #ifndef NDEBUG
     for (size_t i = 0; i < _texCoordsLists.size(); i++) {
