@@ -58,7 +58,7 @@ namespace citygml {
         }
 
         if (m_surfaceDataList.empty()) {
-            CITYGML_LOG_ERROR(m_logger, "Appearance node that ends at " << getDocumentLocation() << " has no surfaceData elements.");
+            CITYGML_LOG_WARN(m_logger, "Appearance node that ends at " << getDocumentLocation() << " has no surfaceData elements.");
         }
 
         // assign the theme to all members
