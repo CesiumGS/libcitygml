@@ -104,7 +104,7 @@ void Tesselator::addContour(const std::vector<TVec3d>& pts, std::vector<std::vec
 
         if (texCoords.size() != pts.size()) {
             if (!texCoords.empty()) {
-                CITYGML_LOG_ERROR(_logger, "Invalid call to 'addContour'. The number of texture coordinates in list " << i << " (" << texCoords.size() << ") "
+                CITYGML_LOG_WARN(_logger, "Invalid call to 'addContour'. The number of texture coordinates in list " << i << " (" << texCoords.size() << ") "
                              "does not match the number of vertices (" << pts.size() << "). The texture coordinates list will be resized which may cause invalid texture coordinates.");
             }
 

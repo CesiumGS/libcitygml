@@ -84,7 +84,7 @@ namespace citygml {
         }
 
         if (it->second.size() != m_vertices.size()) {
-            CITYGML_LOG_ERROR(m_logger, "Number of texture coordinates (" << it->second.size() << ") for theme "
+            CITYGML_LOG_WARN(m_logger, "Number of texture coordinates (" << it->second.size() << ") for theme "
                              << theme << " in polygon with id " << this->getId() << " does not match number of vertices (" << m_vertices.size()
                               << ").");
         }
