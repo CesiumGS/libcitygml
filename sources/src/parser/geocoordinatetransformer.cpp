@@ -25,6 +25,7 @@ public:
 		, m_logger(logger)
     {
         OGRErr err = m_destSRS.SetFromUserInput(destURN.c_str());
+        m_destSRS.SetAxisMappingStrategy(OAMS_TRADITIONAL_GIS_ORDER);
 
         if (err != OGRERR_NONE) {
             CITYGML_LOG_ERROR(m_logger, "Could not create OGRSpatialReference for destination SRS " << destURN << ". OGR error code: " << err << ".");
@@ -78,6 +79,7 @@ public:
 
         OGRSpatialReference refSys;
         OGRErr err = refSys.SetFromUserInput(sourceURN.c_str());
+        refSys.SetAxisMappingStrategy(OAMS_TRADITIONAL_GIS_ORDER);
 
         if (err != OGRERR_NONE) {
             return false;
@@ -96,6 +98,7 @@ public:
 
         OGRSpatialReference sourceSRS;
         OGRErr err = sourceSRS.SetFromUserInput(sourceURN.c_str());
+        sourceSRS.SetAxisMappingStrategy(OAMS_TRADITIONAL_GIS_ORDER);
 
         if (err != OGRERR_NONE) {
             CITYGML_LOG_ERROR(m_logger, "Could not create OGRSpatialReference for source SRS " << sourceURN << ". OGR error code: " << err << ".");
