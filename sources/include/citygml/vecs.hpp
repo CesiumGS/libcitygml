@@ -318,7 +318,7 @@ public:
         this->w = w;
     }
 
-    TVec4( const T vec[], const T w ) { memcpy( xyzw, vec, 4 * sizeof(T) ); this->w = w; }
+    TVec4( const T vec[], const T w ) { memcpy( xyzw, vec, 3 * sizeof(T) ); this->w = w; }
 
     TVec4( const T vec[] ) { memcpy( xyzw, vec, 4 * sizeof(T) ); }
 };
