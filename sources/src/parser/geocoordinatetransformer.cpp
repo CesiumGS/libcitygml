@@ -21,6 +21,7 @@ public:
     GeoTransform( const std::string& destURN, std::shared_ptr<citygml::CityGMLLogger> logger )
 		: m_destSRSURN(destURN)
 		, m_sourceURN("")
+		, m_verticalToMeters(1.0)
 		, m_transformation(nullptr)
 		, m_logger(logger)
     {
@@ -37,6 +38,7 @@ public:
 		: m_destSRS(other.m_destSRS)
 		, m_destSRSURN(other.m_destSRSURN)
 		, m_sourceURN("")
+		, m_verticalToMeters(1.0)
 		, m_transformation(nullptr)
 		, m_logger(other.m_logger)
 	{
@@ -60,6 +62,8 @@ public:
         }
 
         m_transformation->Transform( 1, &p.x, &p.y, &p.z );
+
+        p.z *= m_verticalToMeters;
     }
 
     void transform( TVec2d &p ) const
@@ -100,6 +104,14 @@ public:
         OGRErr err = sourceSRS.SetFromUserInput(sourceURN.c_str());
         sourceSRS.SetAxisMappingStrategy(OAMS_TRADITIONAL_GIS_ORDER);
 
+        // Guess the units of the vertical axis for 2D CRS
+        double verticalToMeters = 1.0;
+        int axesCount = sourceSRS.GetAxesCount();
+        if (axesCount == 2)
+        {
+            verticalToMeters = sourceSRS.GetLinearUnits();
+        }
+
         if (err != OGRERR_NONE) {
             CITYGML_LOG_ERROR(m_logger, "Could not create OGRSpatialReference for source SRS " << sourceURN << ". OGR error code: " << err << ".");
             return;
@@ -112,6 +124,7 @@ public:
         }
 
         m_sourceURN = sourceURN;
+        m_verticalToMeters = verticalToMeters;
     }
 
     std::string sourceURN() const { return m_sourceURN; }
@@ -120,6 +133,7 @@ private:
     OGRSpatialReference m_destSRS;
     std::string m_destSRSURN;
     std::string m_sourceURN;
+    double m_verticalToMeters;
 
     OGRCoordinateTransformation* m_transformation;
     std::shared_ptr<citygml::CityGMLLogger> m_logger;
