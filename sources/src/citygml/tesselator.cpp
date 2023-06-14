@@ -192,6 +192,9 @@ void CALLBACK Tesselator::errorCallback( GLenum errorCode, void* userData )
 #ifdef USE_GLUTESS
     CITYGML_LOG_ERROR(tess->_logger, "Tesselator error with code: " << errorCode );
 #else
+#ifdef USE_GLUTESS
+    CITYGML_LOG_ERROR(tess->_logger, "Tesselator error with code: " << errorCode );
+#else
     CITYGML_LOG_ERROR(tess->_logger, "Tesselator error: " << gluErrorString( errorCode ));
 #endif
 }
