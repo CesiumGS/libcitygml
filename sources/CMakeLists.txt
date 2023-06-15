@@ -126,7 +126,7 @@ SET(SOURCES
 
 if(UNIX)
   if (APPLE)
-    if (LIBCITYGML_USE_OPENGL)
+    if (LIBCITYGML_USE_OPENGL OR LIBCITYGML_USE_GLUTESS)
       set_source_files_properties(src/citygml/tesselator.cpp PROPERTIES COMPILE_FLAGS "-Wno-deprecated-declarations") # for warnings: 'glu*' is deprecated...
     endif (LIBCITYGML_USE_OPENGL)
   endif (APPLE)
@@ -168,7 +168,7 @@ SET(PUBLIC_HEADER
 )
 
 
-if(LIBCITYGML_USE_OPENGL) 
+if(LIBCITYGML_USE_OPENGL OR LIBCITYGML_USE_GLUTESS) 
   SET(SOURCES 
     ${SOURCES} 
     src/citygml/tesselator.cpp
