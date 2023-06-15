@@ -258,20 +258,20 @@ else()
   set(CONFIG_INSTALL_DIR "${LIB_INSTALL_DIR}/cmake/citygml")
 endif()
 
-INSTALL(
-    TARGETS ${target}
-    EXPORT citygmlConfigInternal
-    RUNTIME DESTINATION ${BIN_INSTALL_DIR}
-    LIBRARY DESTINATION ${LIB_INSTALL_DIR}
-    ARCHIVE DESTINATION ${LIB_INSTALL_DIR}
-    COMPONENT "runtime"
-)
-INSTALL(
-    EXPORT citygmlConfigInternal
-    DESTINATION "${CONFIG_INSTALL_DIR}"
-    NAMESPACE "citygml::"
-    COMPONENT "development"
-)
+# INSTALL(
+#     TARGETS ${target}
+#     EXPORT citygmlConfigInternal
+#     RUNTIME DESTINATION ${BIN_INSTALL_DIR}
+#     LIBRARY DESTINATION ${LIB_INSTALL_DIR}
+#     ARCHIVE DESTINATION ${LIB_INSTALL_DIR}
+#     COMPONENT "runtime"
+# )
+# INSTALL(
+#     EXPORT citygmlConfigInternal
+#     DESTINATION "${CONFIG_INSTALL_DIR}"
+#     NAMESPACE "citygml::"
+#     COMPONENT "development"
+# )
 
 include(CMakePackageConfigHelpers)
 configure_package_config_file(

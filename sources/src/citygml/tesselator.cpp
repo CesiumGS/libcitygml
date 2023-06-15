@@ -70,6 +70,14 @@ void Tesselator::addContour(const std::vector<TVec3d>& pts, std::vector<std::vec
     unsigned int pos = _vertices.size();
     TesselatorBase::addContour(pts, textureCoordinatesLists);
 
+    gluTessBeginContour( _tobj );
+    for ( unsigned int i = 0; i < len; i++ )
+    {
+        _vertices.push_back( pts[i] );
+        _indices.push_back(pos + i);
+    }
+    gluTessEndContour( _tobj );
+
     unsigned int len = pts.size();
     // Add contour to queue, and process later.
     ContourRef contour(pos, len);
@@ -189,9 +197,6 @@ void CALLBACK Tesselator::endCallback( void* userData )
 void CALLBACK Tesselator::errorCallback( GLenum errorCode, void* userData )
 {
     Tesselator *tess = static_cast<Tesselator*>(userData);
-#ifdef USE_GLUTESS
-    CITYGML_LOG_ERROR(tess->_logger, "Tesselator error with code: " << errorCode );
-#else
 #ifdef USE_GLUTESS
     CITYGML_LOG_ERROR(tess->_logger, "Tesselator error with code: " << errorCode );
 #else
