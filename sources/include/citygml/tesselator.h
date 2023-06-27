@@ -18,7 +18,6 @@
 #define __TESSELATOR_H__
 
 #ifdef WIN32
-# define NOMINMAX
 #	include <windows.h>
 #else
 #	define CALLBACK
