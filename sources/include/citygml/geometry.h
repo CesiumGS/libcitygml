@@ -7,7 +7,7 @@
 #include <citygml/citygml_api.h>
 #include <citygml/appearancetarget.h>
 
-class Tesselator;
+class TesselatorBase;
 
 namespace citygml {
 
@@ -34,7 +34,8 @@ namespace citygml {
             GT_InteriorWall     = 1 << 6,
             GT_Ceiling          = 1 << 7,
             GT_OuterCeiling     = 1 << 8,
-            GT_OuterFloor       = 1 << 9
+            GT_OuterFloor       = 1 << 9,
+            GT_Tin              = 1 << 10,
         };
 
         unsigned int getLOD() const;
@@ -59,6 +60,10 @@ namespace citygml {
         unsigned int lod() const;
         void setLod(unsigned int lod);
 
+        // Access the srs of the implicit geometry
+        std::string getSRSName() const;
+        void setSRSName(const std::string& srsName);
+
         void addPolygon(std::shared_ptr<Polygon> );
         void addLineString(std::shared_ptr<LineString>);
 
@@ -68,19 +73,21 @@ namespace citygml {
          * @param tesselator the tesselator to be used for tesselation
          * @param mergePolygons determines wether all polygons are merged into one
          */
-        void finish(Tesselator& tesselator, bool optimize, std::shared_ptr<CityGMLLogger> logger);
+        void finish(TesselatorBase* tesselator, bool optimize, std::shared_ptr<CityGMLLogger> logger);
 
         ~Geometry();
 
 
     protected:
-        Geometry( const std::string& id, GeometryType type = GeometryType::GT_Unknown, unsigned int lod = 0 );
+        Geometry( const std::string& id, GeometryType type = GeometryType::GT_Unknown, unsigned int lod = 0, std::string srsName = "" );
 
         bool m_finished;
 
         GeometryType m_type;
 
         unsigned int m_lod;
+
+        std::string m_srsName;
 
         std::vector<std::shared_ptr<Geometry> > m_childGeometries;
 

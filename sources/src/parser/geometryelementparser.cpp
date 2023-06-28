@@ -60,6 +60,7 @@ namespace citygml {
                 geometryTypeIDSet.insert(NodeType::GML_PolyhedralSurfaceNode.typeID());
                 geometryTypeIDSet.insert(NodeType::GML_SurfaceNode.typeID());
 				geometryTypeIDSet.insert(NodeType::GML_MultiCurveNode.typeID());
+                geometryTypeIDSet.insert(NodeType::GML_MultiPointNode.typeID());
                 geometryTypeIDSetInitialized = true;
 
             }
@@ -76,7 +77,9 @@ namespace citygml {
             throw std::runtime_error("Unexpected start tag found.");
         }
 
-        m_model = m_factory.createGeometry(attributes.getCityGMLIDAttribute(), m_parentType, m_lodLevel);
+        std::string srsName = attributes.getAttribute("srsName");
+
+        m_model = m_factory.createGeometry(attributes.getCityGMLIDAttribute(), m_parentType, m_lodLevel, srsName);
         m_orientation = attributes.getAttribute("orientation", "+"); // A gml:OrientableSurface may define a negative orientation
         return true;
 
@@ -136,7 +139,7 @@ namespace citygml {
             };
 
             setParserForNextElement(new SequenceParser(m_documentParser, m_logger, patchParserFactory, node));
-
+            return true;
         }
 
         return GMLObjectElementParser::parseChildElementStartTag(node, attributes);

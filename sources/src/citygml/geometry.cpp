@@ -7,8 +7,8 @@
 
 namespace citygml {
 
-    Geometry::Geometry(const std::string& id, Geometry::GeometryType type, unsigned int lod)
-        : AppearanceTarget( id ), m_finished(false), m_type( type ), m_lod( lod )
+    Geometry::Geometry(const std::string& id, Geometry::GeometryType type, unsigned int lod, std::string srsName)
+        : AppearanceTarget( id ), m_finished(false), m_type( type ), m_lod( lod ), m_srsName( srsName )
     {
 
     }
@@ -96,6 +96,8 @@ namespace citygml {
             return "OuterCeiling";
         case GeometryType::GT_OuterFloor:
             return "OuterFloor";
+        case GeometryType::GT_Tin:
+            return "Tin";
         default:
             return "Unknown";
         }
@@ -115,6 +117,15 @@ namespace citygml {
         m_lod = lod;
     }
 
+    std::string Geometry::getSRSName() const
+    {
+        return m_srsName;
+    }
+
+    void Geometry::setSRSName(const std::string& srsName)
+    {
+        m_srsName = srsName;
+    }
 
     void Geometry::addPolygon( std::shared_ptr<Polygon> p )
     {
@@ -126,7 +137,7 @@ namespace citygml {
         m_lineStrings.push_back(l);
     }
 
-    void Geometry::finish(Tesselator& tesselator, bool optimize, std::shared_ptr<CityGMLLogger> logger)
+    void Geometry::finish(TesselatorBase* tesselator, bool optimize, std::shared_ptr<CityGMLLogger> logger)
     {
         // only need to finish geometry once
         if (m_finished) {

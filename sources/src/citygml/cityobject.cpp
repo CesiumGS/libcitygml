@@ -98,7 +98,23 @@ namespace citygml {
         m_address = std::move(address);
     }
 
-    void CityObject::finish(Tesselator& tesselator, bool optimize, std::shared_ptr<CityGMLLogger> logger)
+    RectifiedGridCoverage const* CityObject::rectifiedGridCoverage() const {
+        return m_rectifiedGridCoverage.get();
+    }
+
+    void CityObject::setRectifiedGridCoverage(RectifiedGridCoverage * rectifiedGridCoverage) {
+        m_rectifiedGridCoverage = std::unique_ptr<RectifiedGridCoverage>(rectifiedGridCoverage);
+    }
+
+    ExternalReference const* CityObject::externalReference() const {
+        return m_externalReference.get();
+    }
+
+    void CityObject::setExternalReference(ExternalReference * externalReference) {
+        m_externalReference = std::unique_ptr<ExternalReference>(externalReference);
+    }
+
+    void CityObject::finish(TesselatorBase* tesselator, bool optimize, std::shared_ptr<CityGMLLogger> logger)
     {
         for (std::unique_ptr<Geometry>& geom : m_geometries) {
             geom->finish(tesselator, optimize, logger);
@@ -209,6 +225,8 @@ namespace citygml {
             return "OuterFloorSurface";
         case CityObject::CityObjectsType::COT_TransportationObject:
             return "TransportationObject";
+        case CityObject::CityObjectsType::COT_IntBuildingInstallation:
+	    return "IntBuildingInstallation";
         default:
             return "Unknown";
         }
@@ -253,7 +271,8 @@ namespace citygml {
          {cityObjectsTypeToLowerString(CityObject::CityObjectsType::COT_CeilingSurface), CityObject::CityObjectsType::COT_CeilingSurface},
          {cityObjectsTypeToLowerString(CityObject::CityObjectsType::COT_OuterCeilingSurface), CityObject::CityObjectsType::COT_OuterCeilingSurface},
          {cityObjectsTypeToLowerString(CityObject::CityObjectsType::COT_OuterFloorSurface), CityObject::CityObjectsType::COT_OuterFloorSurface},
-         {cityObjectsTypeToLowerString(CityObject::CityObjectsType::COT_TransportationObject), CityObject::CityObjectsType::COT_TransportationObject}
+         {cityObjectsTypeToLowerString(CityObject::CityObjectsType::COT_TransportationObject), CityObject::CityObjectsType::COT_TransportationObject},
+	 {cityObjectsTypeToLowerString(CityObject::CityObjectsType::COT_IntBuildingInstallation), CityObject::CityObjectsType::COT_IntBuildingInstallation}
     };
 
     CityObject::CityObjectsType cityObjectsTypeFromString(const std::string& s, bool& valid)

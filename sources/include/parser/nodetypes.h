@@ -146,9 +146,11 @@ namespace citygml {
         NODETYPE( GML, Shell )
         NODETYPE( GML, PolyhedralSurface )
         NODETYPE( GML, Surface )
-        NODETYPE( GML, PolygonPatch)
+        NODETYPE( GML, PolygonPatch )
 
         NODETYPE( GML, LineString )
+        
+        NODETYPE( GML, RectifiedGridCoverage )
 
         // BLDG
         NODETYPE( BLDG, Building )
@@ -176,7 +178,9 @@ namespace citygml {
         NODETYPE( BLDG, RoomInstallation)
         NODETYPE( BLDG, Opening)
         NODETYPE( BLDG, RoofType)
-
+        
+        NODETYPE( BLDG, Lod0FootPrint )
+        NODETYPE( BLDG, Lod0RoofEdge )
         NODETYPE( BLDG, Lod1Solid )
         NODETYPE( BLDG, Lod2Solid )
         NODETYPE( BLDG, Lod3Solid )
@@ -209,7 +213,8 @@ namespace citygml {
         NODETYPE( BLDG, OuterCeilingSurface )
         NODETYPE( BLDG, OuterFloorSurface )
         NODETYPE( BLDG, BuildingFurniture )
-
+        NODETYPE( BLDG, IntBuildingInstallation)
+            
         NODETYPE( BLDG, CityFurniture )
         NODETYPE( BLDG, Address)
 
