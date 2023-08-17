@@ -112,10 +112,4 @@ void TesselatorBase::addContour(const std::vector<TVec3d>& pts, std::vector<std:
         }
 
     }
-
-#ifndef NDEBUG
-    for (size_t i = 0; i < _texCoordsLists.size(); i++) {
-        assert(_texCoordsLists.at(i).size() == _vertices.size());
-    }
-#endif
 }

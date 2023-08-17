@@ -67,10 +67,11 @@ void Tesselator::compute()
 
 void Tesselator::addContour(const std::vector<TVec3d>& pts, std::vector<std::vector<TVec2f> > textureCoordinatesLists )
 {
-    unsigned int pos = _vertices.size();
-    unsigned int len = pts.size();
     TesselatorBase::addContour(pts, textureCoordinatesLists);
 
+    unsigned int pos = _vertices.size();
+    unsigned int len = pts.size();
+    
     gluTessBeginContour( _tobj );
     for ( unsigned int i = 0; i < len; i++ )
     {
@@ -79,6 +80,11 @@ void Tesselator::addContour(const std::vector<TVec3d>& pts, std::vector<std::vec
     }
     gluTessEndContour( _tobj );
 
+#ifndef NDEBUG
+    for (size_t i = 0; i < _texCoordsLists.size(); i++) {
+        assert(_texCoordsLists.at(i).size() == _vertices.size());
+    }
+#endif
     // Add contour to queue, and process later.
     ContourRef contour(pos, len);
     _contourQueue.push_back(contour);
