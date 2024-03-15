@@ -61,6 +61,7 @@ public:
             return;
         }
 
+        std::swap(p.x, p.y);
         m_transformation->Transform( 1, &p.x, &p.y, &p.z );
 
         p.z *= m_verticalToMeters;
