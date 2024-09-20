@@ -62,7 +62,7 @@ public:
         }
 
         const char* flipLatLon = std::getenv("CITYGML_FLIP_LAT_LON");
-        if (strcmp(flipLatLon, "1") == 0)
+        if (flipLatLon && strcmp(flipLatLon, "1") == 0)
         {
             std::swap(p.x, p.y);
         }
