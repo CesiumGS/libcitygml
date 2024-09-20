@@ -25,11 +25,8 @@ public:
 		, m_transformation(nullptr)
 		, m_logger(logger)
     {
-        const char* flipLatLon = std::getenv("CITYGML_FLIP_LAT_LON");
-        m_flipLatLon = (flipLatLon && strcmp(flipLatLon, "1") == 0);
-
         OGRErr err = m_destSRS.SetFromUserInput(destURN.c_str());
-        m_destSRS.SetAxisMappingStrategy(OAMS_TRADITIONAL_GIS_ORDER);
+        m_destSRS.SetAxisMappingStrategy(OAMS_AUTHORITY_COMPLIANT);
 
         if (err != OGRERR_NONE) {
             CITYGML_LOG_ERROR(m_logger, "Could not create OGRSpatialReference for destination SRS " << destURN << ". OGR error code: " << err << ".");
@@ -44,7 +41,6 @@ public:
 		, m_verticalToMeters(1.0)
 		, m_transformation(nullptr)
 		, m_logger(other.m_logger)
-        , m_flipLatLon(other.m_flipLatLon)
 	{
     }
 
@@ -65,9 +61,6 @@ public:
             return;
         }
 
-        if (m_flipLatLon) {
-            std::swap(p.x, p.y);
-        }
         m_transformation->Transform( 1, &p.x, &p.y, &p.z );
 
         p.z *= m_verticalToMeters;
@@ -144,7 +137,6 @@ private:
 
     OGRCoordinateTransformation* m_transformation;
     std::shared_ptr<citygml::CityGMLLogger> m_logger;
-    bool m_flipLatLon;
 };
 
 namespace citygml {
