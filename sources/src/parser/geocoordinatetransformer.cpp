@@ -61,7 +61,11 @@ public:
             return;
         }
 
-        std::swap(p.x, p.y);
+        const char* flipLatLon = std::getenv("CITYGML_FLIP_LAT_LON");
+        if (strcmp(flipLatLon, "1"))
+        {
+            std::swap(p.x, p.y);
+        }
         m_transformation->Transform( 1, &p.x, &p.y, &p.z );
 
         p.z *= m_verticalToMeters;
