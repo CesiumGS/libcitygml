@@ -22,14 +22,17 @@ public:
 		: m_destSRSURN(destURN)
 		, m_sourceURN("")
 		, m_verticalToMeters(1.0)
+		, m_useSrsOrdering(false)
 		, m_transformation(nullptr)
 		, m_logger(logger)
     {
+        // Get Destination to use traditional ordering
         OGRErr err = m_destSRS.SetFromUserInput(destURN.c_str());
+        m_destSRS.SetAxisMappingStrategy(OAMS_TRADITIONAL_GIS_ORDER);
 
+        // Allow SRS ordering for source data with an environment variable
         const char* useSrsOrdering = std::getenv("CITYGML_USE_SRS_ORDERING");
-        auto strategy = (useSrsOrdering && strcmp(useSrsOrdering, "1") == 0) ? OAMS_AUTHORITY_COMPLIANT : OAMS_TRADITIONAL_GIS_ORDER;
-        m_destSRS.SetAxisMappingStrategy(strategy);
+        m_useSrsOrdering = (useSrsOrdering && strcmp(useSrsOrdering, "1") == 0);
 
         if (err != OGRERR_NONE) {
             CITYGML_LOG_ERROR(m_logger, "Could not create OGRSpatialReference for destination SRS " << destURN << ". OGR error code: " << err << ".");
@@ -42,6 +45,7 @@ public:
 		, m_destSRSURN(other.m_destSRSURN)
 		, m_sourceURN("")
 		, m_verticalToMeters(1.0)
+		, m_useSrsOrdering(other.m_useSrsOrdering)
 		, m_transformation(nullptr)
 		, m_logger(other.m_logger)
 	{
@@ -105,7 +109,7 @@ public:
 
         OGRSpatialReference sourceSRS;
         OGRErr err = sourceSRS.SetFromUserInput(sourceURN.c_str());
-        sourceSRS.SetAxisMappingStrategy(OAMS_TRADITIONAL_GIS_ORDER);
+        sourceSRS.SetAxisMappingStrategy(m_useSrsOrdering ? OAMS_AUTHORITY_COMPLIANT : OAMS_TRADITIONAL_GIS_ORDER);
 
         // Guess the units of the vertical axis for 2D CRS
         double verticalToMeters = 1.0;
@@ -137,6 +141,7 @@ private:
     std::string m_destSRSURN;
     std::string m_sourceURN;
     double m_verticalToMeters;
+    bool m_useSrsOrdering;
 
     OGRCoordinateTransformation* m_transformation;
     std::shared_ptr<citygml::CityGMLLogger> m_logger;
