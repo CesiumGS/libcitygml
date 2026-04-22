@@ -278,6 +278,7 @@ namespace citygml
 
         xercesc::SAX2XMLReader* parser = xercesc::XMLReaderFactory::createXMLReader();
         parser->setFeature(xercesc::XMLUni::fgSAX2CoreNameSpaces, false);
+        parser->setFeature(xercesc::XMLUni::fgXercesDisableDefaultEntityResolution, true);
         parser->setContentHandler( &handler );
         parser->setErrorHandler( &handler );
 
