@@ -44,6 +44,9 @@ namespace citygml {
         NODETYPE( CORE, CreationDate )
         NODETYPE( CORE, TerminationDate )
         NODETYPE( CORE, GeneralizesTo)
+        NODETYPE( CORE, GenericAttribute)
+        // CityGML 3.0 replacement for BLDG_BoundedByNode (2.0)
+        NODETYPE( CORE, Boundary)
 
         NODETYPE( CORE, ExternalReference)
         NODETYPE( CORE, InformationSystem)
