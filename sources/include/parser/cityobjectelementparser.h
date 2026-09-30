@@ -38,7 +38,7 @@ namespace citygml {
         std::function<void(CityObject*)> m_callback;
         std::string m_lastAttributeName;
         AttributeType m_lastAttributeType;
-        // True while parsing the contents of a core:genericAttribute wrapper (CityGML 3.0)
+        // True while parsing a gen:*Attribute element (CityGML 2.0/3.0) so nested <gen:name>/<core:name>/<gml:name> can be interpreted as the attribute name.
         bool m_insideGenericAttribute;
 
         // The nodes that are valid CityObjects
