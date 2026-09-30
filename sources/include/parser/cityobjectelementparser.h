@@ -38,6 +38,8 @@ namespace citygml {
         std::function<void(CityObject*)> m_callback;
         std::string m_lastAttributeName;
         AttributeType m_lastAttributeType;
+        // True while parsing a gen:*Attribute element (CityGML 2.0/3.0) so nested <gen:name>/<core:name>/<gml:name> can be interpreted as the attribute name.
+        bool m_insideGenericAttribute;
 
         // The nodes that are valid CityObjects
         static std::mutex initializedTypeIDMutex;

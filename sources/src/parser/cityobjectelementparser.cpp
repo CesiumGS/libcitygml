@@ -39,6 +39,7 @@ namespace citygml {
     CityObjectElementParser::CityObjectElementParser(CityGMLDocumentParser& documentParser, CityGMLFactory& factory, std::shared_ptr<CityGMLLogger> logger, std::function<void (CityObject*)> callback)
         : GMLFeatureCollectionElementParser(documentParser, factory, logger)
         , m_lastAttributeType(AttributeType::String)
+        , m_insideGenericAttribute(false)
     {
         m_callback = callback;
     }
@@ -270,9 +271,17 @@ namespace citygml {
              || node == NodeType::GEN_DateAttributeNode
              || node == NodeType::GEN_UriAttributeNode) {
 
+            // CityGML 2.0 puts the name on the element itself; CityGML 3.0 puts it in a nested name element instead (see below).
             m_lastAttributeName = attributes.getAttribute("name");
             m_lastAttributeType = getAttributeType(node);
-        } else if (attributesSet.count(node.typeID()) > 0 || node == NodeType::GEN_ValueNode) {
+            m_insideGenericAttribute = true;
+        } else if (m_insideGenericAttribute
+                   && (node == NodeType::GML_NameNode || node == NodeType::CORE_NameNode)) {
+            // CityGML 3.0 attribute name, e.g. <gen:name>EGID</gen:name>; captured on the end tag below.
+            return true;
+        } else if (attributesSet.count(node.typeID()) > 0
+                   || node == NodeType::GEN_ValueNode
+                   || node == NodeType::CORE_GenericAttributeNode) {
 
             return true;
         } else if (node == NodeType::GML_RectifiedGridCoverageNode) {
@@ -281,6 +290,7 @@ namespace citygml {
                 m_model->setRectifiedGridCoverage(rectifiedGridCoverage);
             }));
         } else if (node == NodeType::BLDG_BoundedByNode
+                   || node == NodeType::CORE_BoundaryNode // CityGML 3.0 replacement for BLDG_BoundedByNode
                    || node == NodeType::BLDG_OuterBuildingInstallationNode
                    || node == NodeType::BLDG_InteriorBuildingInstallationNode
                    || node == NodeType::BLDG_InteriorFurnitureNode
@@ -461,7 +471,13 @@ namespace citygml {
 
             m_lastAttributeName = "";
             m_lastAttributeType = AttributeType::String;
+            m_insideGenericAttribute = false;
 
+            return true;
+        } else if (m_insideGenericAttribute
+                   && (node == NodeType::GML_NameNode || node == NodeType::CORE_NameNode)) {
+
+            m_lastAttributeName = characters;
             return true;
         } else if (node == NodeType::GEN_ValueNode) {
 
@@ -472,12 +488,16 @@ namespace citygml {
             }
 
             return true;
+        } else if (node == NodeType::CORE_GenericAttributeNode) {
+
+            return true;
         } else if (attributesSet.count(node.typeID()) > 0) {
             if (!characters.empty()) {
                 m_model->setAttribute(node.name(), characters, attributeTypeMap.at(node.typeID()));
             }
             return true;
         } else if (node == NodeType::BLDG_BoundedByNode
+                    || node == NodeType::CORE_BoundaryNode // CityGML 3.0 replacement for BLDG_BoundedByNode
                     || node == NodeType::BLDG_OuterBuildingInstallationNode
                     || node == NodeType::BLDG_InteriorBuildingInstallationNode
                     || node == NodeType::BLDG_InteriorFurnitureNode

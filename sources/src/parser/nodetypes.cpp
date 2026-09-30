@@ -87,6 +87,8 @@ namespace citygml {
                 INITIALIZE_NODE( CORE, CreationDate )
                 INITIALIZE_NODE( CORE, TerminationDate )
                 INITIALIZE_NODE( CORE, GeneralizesTo)
+                INITIALIZE_NODE( CORE, GenericAttribute)
+                INITIALIZE_NODE( CORE, Boundary)
 
                 INITIALIZE_NODE( CORE, ExternalReference)
                 INITIALIZE_NODE( CORE, InformationSystem)
@@ -467,6 +469,8 @@ namespace citygml {
     DEFINE_NODE( CORE, CreationDate )
     DEFINE_NODE( CORE, TerminationDate )
     DEFINE_NODE( CORE, GeneralizesTo)
+    DEFINE_NODE( CORE, GenericAttribute)
+    DEFINE_NODE( CORE, Boundary)
 
     DEFINE_NODE( CORE, ExternalReference)
     DEFINE_NODE( CORE, InformationSystem)
